@@ -11,9 +11,19 @@ datasource db {
 }
 
 model Employee {
-  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
   name        String
-  employeeId  String @unique
-  email       String @unique
-  phoneNumber Int    @unique
+  employeeId  String    @unique
+  email       String    @unique
+  phoneNumber String    @unique
+  password    String
+  Project     Project[]
+}
+
+model Project {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String
+  employee    Employee @relation(fields: [employeeId], references: [id])
+  employeeId  String
 }

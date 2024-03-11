@@ -11,52 +11,52 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { EmployeeService } from 'src/services/employee/employee.service';
-import { CreateEmployeeDto } from 'src/utils/dto/employee.dto';
+import { ProjectService } from 'src/services/project/project.service';
+import { AddProjectDto } from 'src/utils/dto/project.dto';
 import { JwtAuthGaurd } from 'src/utils/gaurd/jwt.gaurd';
 
-@ApiTags('Employee')
-@Controller('employee')
-export class EmployeeController {
-  constructor(private readonly employeeService: EmployeeService) {}
+@ApiTags('Project')
+@Controller('project')
+export class ProjectController {
+  constructor(private readonly projectService: ProjectService) {}
   @Get()
   @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGaurd)
   @UseInterceptors(ClassSerializerInterceptor)
-  getEmployeeDetails() {
-    return this.employeeService.getEmployeeDetails();
+  getProjectDetails() {
+    return this.projectService.getProjectDetails();
   }
 
   @Post()
   @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGaurd)
   @UseInterceptors(ClassSerializerInterceptor)
-  async createEmolyee(@Body() employeeData: CreateEmployeeDto) {
-    return this.employeeService.CreateEmployee(employeeData);
+  async addProject(@Body() projectData: AddProjectDto) {
+    return this.projectService.addProject(projectData);
   }
 
   @Get(':id')
   @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGaurd)
   @UseInterceptors(ClassSerializerInterceptor)
-  getEmployeeDetailsById(@Param('id') id: string) {
-    return this.employeeService.getEmployeeDetailsById(id);
+  getProjectDetailsById(@Param('id') id: string) {
+    return this.projectService.getProjectDetailsById(id);
   }
 
   @Delete(':id')
   @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGaurd)
-  deleteEmployeeById(@Param('id') id: string) {
-    return this.employeeService.deleteEmployeeById(id);
+  deleteProjectById(@Param('id') id: string) {
+    return this.projectService.deleteProjectById(id);
   }
 
   @Patch(':id')
   @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGaurd)
-  updateEmployeeById(
+  updateProjectById(
     @Param('id') id: string,
-    @Body() employeeData: CreateEmployeeDto,
+    @Body() projectData: AddProjectDto,
   ) {
-    return this.employeeService.updateEmployeeById(id, employeeData);
+    return this.projectService.updateProjectById(id, projectData);
   }
 }
