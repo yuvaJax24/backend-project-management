@@ -8,7 +8,7 @@ export class AddProjectDto {
   description: string;
 
   @ApiProperty()
-  employeeId: string;
+  employeeId: string[];
 }
 
 export class ProjectDto {
@@ -19,7 +19,7 @@ export class ProjectDto {
   description: string;
 
   @ApiProperty()
-  employeeId: string;
+  employeeId: string[];
 
   constructor(partial: Partial<ProjectDto>) {
     Object.assign(this, partial);

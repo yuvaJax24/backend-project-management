@@ -11,9 +11,12 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ROLE } from 'src/common/enum';
+import { Roles } from 'src/decorator/roles.secorator';
 import { EmployeeService } from 'src/services/employee/employee.service';
 import { CreateEmployeeDto } from 'src/utils/dto/employee.dto';
 import { JwtAuthGaurd } from 'src/utils/gaurd/jwt.gaurd';
+import { RolesGuard } from 'src/utils/gaurd/roles.gaurd';
 
 @ApiTags('Employee')
 @Controller('employee')
@@ -23,6 +26,8 @@ export class EmployeeController {
   @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGaurd)
   @UseInterceptors(ClassSerializerInterceptor)
+  @Roles(ROLE.ADMIN)
+  @UseGuards(RolesGuard)
   getEmployeeDetails() {
     return this.employeeService.getEmployeeDetails();
   }

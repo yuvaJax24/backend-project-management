@@ -13,12 +13,17 @@ export class ProjectService {
   constructor(private prisma: PrismaService) {}
   async getProjectDetails() {
     try {
-      const projectDetail = await this.prisma.findMany(TABLE.PROJECT, {});
+      const projectDetail = await this.prisma.findMany(TABLE.PROJECT, {
+        include: {
+          employee: true,
+        },
+      });
       return {
         status: HttpStatus.OK,
         data: projectDetail?.map((project) => new ProjectDto(project)),
       };
-    } catch {
+    } catch (err) {
+      console.log('GET::Project', err);
       throw new InternalServerErrorException({
         status: HttpStatus.INTERNAL_SERVER_ERROR,
         message: RESPONSE_MESSAGE.FAILED_TO_FETCH_PROJECT,
@@ -28,16 +33,23 @@ export class ProjectService {
 
   async addProject(projectData: AddProjectDto) {
     try {
-      const projectDetail = await this.prisma.create(
-        TABLE.PROJECT,
-        projectData,
-      );
+      const projectDetail = await this.prisma.create(TABLE.PROJECT, {
+        ...projectData,
+        employee: {
+          connect: projectData?.employeeId?.map((id) => {
+            return {
+              id,
+            };
+          }),
+        },
+      });
       return {
         status: HttpStatus.OK,
         data: new ProjectDto(projectDetail),
         message: 'Project Added',
       };
     } catch (err) {
+      console.log('POST::Project', err);
       throw new InternalServerErrorException({
         status: HttpStatus.INTERNAL_SERVER_ERROR,
         message: 'Failed to add a project',
@@ -49,6 +61,9 @@ export class ProjectService {
     try {
       const projectDetail = await this.prisma.findUnique(TABLE.PROJECT, {
         where: { id },
+        include: {
+          employee: true,
+        },
       });
       if (projectDetail) {
         return {
@@ -100,6 +115,9 @@ export class ProjectService {
       const projectDetail = await this.prisma.update(TABLE.PROJECT, {
         where: { id },
         data: payload,
+        include: {
+          employee: true,
+        },
       });
       if (projectDetail) {
         return {

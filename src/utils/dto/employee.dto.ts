@@ -15,6 +15,9 @@ export class CreateEmployeeDto {
   phoneNumber: string;
 
   @ApiProperty()
+  projectId: string[];
+
+  @ApiProperty()
   @Exclude()
   password: string;
 }
@@ -39,6 +42,9 @@ export class EmployeeDto {
 
   @ApiProperty()
   phoneNumber: string;
+
+  @ApiProperty()
+  projectId: string[];
 
   @ApiProperty()
   @Exclude()

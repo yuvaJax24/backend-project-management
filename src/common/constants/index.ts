@@ -8,6 +8,7 @@ export const RESPONSE_MESSAGE = {
   EMPLOYEE_NOT_FOUND: 'Employee not found',
   FAILED_TO_FETCH_PROJECT: 'Failed to fetch Project details',
   PROJECT_NOT_FOUND: 'Project not found',
+  PERMISSION_DENIED: 'Permission denied',
 };
 
 export const TOKEN_EXPIRY = {
@@ -49,3 +50,7 @@ export const columns: any[] = [
     width: 20,
   },
 ];
+
+export const DECORATOR_KEY = {
+  ROLES: 'roles',
+};

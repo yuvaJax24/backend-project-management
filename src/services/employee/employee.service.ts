@@ -19,7 +19,11 @@ export class EmployeeService {
   constructor(private prisma: PrismaService) {}
   async getEmployeeDetails() {
     try {
-      const employeeDetail = await this.prisma.findMany(TABLE.EMPLOYEE, {});
+      const employeeDetail = await this.prisma.findMany(TABLE.EMPLOYEE, {
+        include: {
+          project: true,
+        },
+      });
       return {
         status: HttpStatus.OK,
         data: employeeDetail?.map((emp) => new EmployeeDto(emp)),
@@ -58,10 +62,16 @@ export class EmployeeService {
     };
     if (!isEmployeeIdExists && !isEmailExists && !isPhoneNumberExists) {
       try {
-        const employeeDetail = await this.prisma.create(
-          TABLE.EMPLOYEE,
-          payload,
-        );
+        const employeeDetail = await this.prisma.create(TABLE.EMPLOYEE, {
+          ...payload,
+          project: {
+            connect: employeeData?.projectId?.map((id) => {
+              return {
+                id,
+              };
+            }),
+          },
+        });
         return {
           status: HttpStatus.OK,
           data: new EmployeeDto(employeeDetail),
@@ -99,6 +109,9 @@ export class EmployeeService {
     try {
       const employeeDetail = await this.prisma.findUnique(TABLE.EMPLOYEE, {
         where: { id },
+        include: {
+          project: true,
+        },
       });
       if (employeeDetail) {
         return {
@@ -150,6 +163,9 @@ export class EmployeeService {
       const employeeDetail = await this.prisma.update(TABLE.EMPLOYEE, {
         where: { id },
         data: payload,
+        include: {
+          project: true,
+        },
       });
       if (employeeDetail) {
         return {
