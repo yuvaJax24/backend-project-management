@@ -1,19 +1,22 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { EmployeeModule } from './modules/employee/employee.module';
-import { LoginModule } from './modules/login/login.module';
 import { JwtModule } from '@nestjs/jwt';
 import { TOKEN_EXPIRY, TOKEN_SECRET } from './common/constants';
 import { JwtStrategy } from './utils/strategies/jwt.strategy';
 import { MulterModule } from '@nestjs/platform-express';
-import { ProjectModule } from './modules/project/project.module';
+import { ProjectModule } from './project/project.module';
+import { EmployeeModule } from './employee/employee.module';
+import { LoginModule } from './login/login.module';
+import { PrismaService } from './prisma/prisma.service';
+import { ReportModule } from './report/report.module';
 
 @Module({
   imports: [
+    LoginModule,
     EmployeeModule,
     ProjectModule,
-    LoginModule,
+    ReportModule,
     JwtModule.register({
       global: true,
       secret: TOKEN_SECRET.accessToken,
@@ -22,6 +25,6 @@ import { ProjectModule } from './modules/project/project.module';
     MulterModule.register({ dest: './file' }),
   ],
   controllers: [AppController],
-  providers: [AppService, JwtStrategy],
+  providers: [AppService, JwtStrategy, PrismaService],
 })
 export class AppModule {}
