@@ -17,6 +17,7 @@ model Employee {
   email       String    @unique
   phoneNumber String    @unique
   password    String
+  role        String
   project     Project[] @relation(fields: [projectId], references: [id])
   projectId   String[]  @db.ObjectId
 }

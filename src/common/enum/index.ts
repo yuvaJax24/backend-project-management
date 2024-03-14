@@ -1,6 +1,6 @@
 export enum ROLE {
-  ADMIN = 'Admin',
-  USER = 'User',
+  ADMIN = 'ADMIN',
+  USER = 'USER',
 }
 
 export enum GROUP_PERMISSIONS {

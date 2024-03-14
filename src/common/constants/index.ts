@@ -1,6 +1,7 @@
 export const TABLE = {
   EMPLOYEE: 'Employee',
   PROJECT: 'Project',
+  ADMIN: 'Admin',
 };
 
 export const RESPONSE_MESSAGE = {
@@ -53,4 +54,5 @@ export const columns: any[] = [
 
 export const DECORATOR_KEY = {
   ROLES: 'roles',
+  PUBLIC: 'public',
 };

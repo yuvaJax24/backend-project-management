@@ -53,17 +53,11 @@ export class EmployeeService {
       employeeData?.password,
       BCRYPT_SALT_ROUNDS,
     );
-    const payload = {
-      name: employeeData?.name,
-      employeeId: employeeData?.employeeId,
-      email: employeeData?.email,
-      phoneNumber: employeeData?.phoneNumber,
-      password: hashedPassword,
-    };
+    employeeData.password = hashedPassword;
     if (!isEmployeeIdExists && !isEmailExists && !isPhoneNumberExists) {
       try {
         const employeeDetail = await this.prisma.create(TABLE.EMPLOYEE, {
-          ...payload,
+          ...employeeData,
           project: {
             connect: employeeData?.projectId?.map((id) => {
               return {
@@ -78,6 +72,7 @@ export class EmployeeService {
           message: 'Employee Created',
         };
       } catch (err) {
+        console.log('POST::Employee', err);
         throw new InternalServerErrorException({
           status: HttpStatus.INTERNAL_SERVER_ERROR,
           message: 'Failed to create Employee',

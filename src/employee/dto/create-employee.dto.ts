@@ -20,6 +20,9 @@ export class CreateEmployeeDto {
   @ApiProperty()
   @Exclude()
   password: string;
+
+  @ApiProperty()
+  role: string;
 }
 
 export class EmployeeDto {
@@ -41,6 +44,9 @@ export class EmployeeDto {
   @ApiProperty()
   @Exclude()
   password: string;
+
+  @ApiProperty()
+  role: string;
 
   constructor(partial: Partial<EmployeeDto>) {
     Object.assign(this, partial);
