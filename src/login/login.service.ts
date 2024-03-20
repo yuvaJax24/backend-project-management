@@ -24,7 +24,7 @@ export class LoginServices {
       where: { email },
     });
     const accessToken = this.jwtService.sign(
-      { payload: loginData },
+      { payload: { ...loginData, role: isEmailExists?.role } },
       {
         expiresIn: TOKEN_EXPIRY.accessToken,
         privateKey: TOKEN_SECRET.accessToken,

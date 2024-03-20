@@ -24,8 +24,8 @@ export class EmployeeController {
   constructor(private readonly employeeService: EmployeeService) {}
   @Get()
   @ApiBearerAuth('access-token')
-  // @Roles(ROLE.ADMIN)
-  @UseGuards(JwtAuthGaurd)
+  @Roles(ROLE.ADMIN, ROLE.USER)
+  @UseGuards(JwtAuthGaurd, RolesGuard)
   @UseInterceptors(ClassSerializerInterceptor)
   getEmployeeDetails() {
     return this.employeeService.getEmployeeDetails();
@@ -33,7 +33,8 @@ export class EmployeeController {
 
   @Post()
   @ApiBearerAuth('access-token')
-  @UseGuards(JwtAuthGaurd)
+  @Roles(ROLE.ADMIN)
+  @UseGuards(JwtAuthGaurd, RolesGuard)
   @UseInterceptors(ClassSerializerInterceptor)
   async createEmolyee(@Body() employeeData: CreateEmployeeDto) {
     return this.employeeService.CreateEmployee(employeeData);
@@ -41,7 +42,8 @@ export class EmployeeController {
 
   @Get(':id')
   @ApiBearerAuth('access-token')
-  @UseGuards(JwtAuthGaurd)
+  @Roles(ROLE.ADMIN, ROLE.USER)
+  @UseGuards(JwtAuthGaurd, RolesGuard)
   @UseInterceptors(ClassSerializerInterceptor)
   getEmployeeDetailsById(@Param('id') id: string) {
     return this.employeeService.getEmployeeDetailsById(id);
@@ -49,14 +51,16 @@ export class EmployeeController {
 
   @Delete(':id')
   @ApiBearerAuth('access-token')
-  @UseGuards(JwtAuthGaurd)
+  @Roles(ROLE.ADMIN)
+  @UseGuards(JwtAuthGaurd, RolesGuard)
   deleteEmployeeById(@Param('id') id: string) {
     return this.employeeService.deleteEmployeeById(id);
   }
 
   @Patch(':id')
   @ApiBearerAuth('access-token')
-  @UseGuards(JwtAuthGaurd)
+  @Roles(ROLE.ADMIN)
+  @UseGuards(JwtAuthGaurd, RolesGuard)
   updateEmployeeById(
     @Param('id') id: string,
     @Body() employeeData: CreateEmployeeDto,

@@ -14,6 +14,9 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ProjectService } from './project.service';
 import { JwtAuthGaurd } from 'src/utils/gaurd/jwt.gaurd';
 import { CreateProjectDto } from './dto/create-project.dto';
+import { RolesGuard } from 'src/utils/gaurd/roles.gaurd';
+import { ROLE } from 'src/common/enum';
+import { Roles } from 'src/decorator/roles.decorator';
 
 @ApiTags('Project')
 @Controller('project')
@@ -21,7 +24,8 @@ export class ProjectController {
   constructor(private readonly projectService: ProjectService) {}
   @Get()
   @ApiBearerAuth('access-token')
-  @UseGuards(JwtAuthGaurd)
+  @Roles(ROLE.ADMIN, ROLE.USER)
+  @UseGuards(JwtAuthGaurd, RolesGuard)
   @UseInterceptors(ClassSerializerInterceptor)
   getProjectDetails() {
     return this.projectService.getProjectDetails();
@@ -29,7 +33,8 @@ export class ProjectController {
 
   @Post()
   @ApiBearerAuth('access-token')
-  @UseGuards(JwtAuthGaurd)
+  @Roles(ROLE.ADMIN)
+  @UseGuards(JwtAuthGaurd, RolesGuard)
   @UseInterceptors(ClassSerializerInterceptor)
   async addProject(@Body() projectData: CreateProjectDto) {
     return this.projectService.addProject(projectData);
@@ -37,7 +42,8 @@ export class ProjectController {
 
   @Get(':id')
   @ApiBearerAuth('access-token')
-  @UseGuards(JwtAuthGaurd)
+  @Roles(ROLE.ADMIN, ROLE.USER)
+  @UseGuards(JwtAuthGaurd, RolesGuard)
   @UseInterceptors(ClassSerializerInterceptor)
   getProjectDetailsById(@Param('id') id: string) {
     return this.projectService.getProjectDetailsById(id);
@@ -45,14 +51,16 @@ export class ProjectController {
 
   @Delete(':id')
   @ApiBearerAuth('access-token')
-  @UseGuards(JwtAuthGaurd)
+  @Roles(ROLE.ADMIN)
+  @UseGuards(JwtAuthGaurd, RolesGuard)
   deleteProjectById(@Param('id') id: string) {
     return this.projectService.deleteProjectById(id);
   }
 
   @Patch(':id')
   @ApiBearerAuth('access-token')
-  @UseGuards(JwtAuthGaurd)
+  @Roles(ROLE.ADMIN)
+  @UseGuards(JwtAuthGaurd, RolesGuard)
   updateProjectById(
     @Param('id') id: string,
     @Body() projectData: CreateProjectDto,

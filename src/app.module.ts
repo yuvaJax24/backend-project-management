@@ -10,6 +10,7 @@ import { EmployeeModule } from './employee/employee.module';
 import { LoginModule } from './login/login.module';
 import { PrismaService } from './prisma/prisma.service';
 import { ReportModule } from './report/report.module';
+import { ChatModule } from './chat/chat.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { ReportModule } from './report/report.module';
     EmployeeModule,
     ProjectModule,
     ReportModule,
+    ChatModule,
     JwtModule.register({
       global: true,
       secret: TOKEN_SECRET.accessToken,
