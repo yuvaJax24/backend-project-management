@@ -53,13 +53,18 @@ export class EmployeeService {
       employeeData?.password,
       BCRYPT_SALT_ROUNDS,
     );
-    employeeData.password = hashedPassword;
+    const payload = {
+      ...employeeData,
+      password: hashedPassword,
+      createdAt: new Date().toISOString(),
+      updateAt: new Date().toISOString(),
+    };
     if (!isEmployeeIdExists && !isEmailExists && !isPhoneNumberExists) {
       try {
         const employeeDetail = await this.prisma.create(TABLE.EMPLOYEE, {
-          ...employeeData,
+          ...payload,
           project: {
-            connect: employeeData?.projectId?.map((id) => {
+            connect: payload?.projectId?.map((id) => {
               return {
                 id,
               };

@@ -32,11 +32,16 @@ export class ProjectService {
   }
 
   async addProject(projectData: CreateProjectDto) {
+    const payload = {
+      ...projectData,
+      createdAt: new Date().toISOString(),
+      updateAt: new Date().toISOString(),
+    };
     try {
       const projectDetail = await this.prisma.create(TABLE.PROJECT, {
-        ...projectData,
+        ...payload,
         employee: {
-          connect: projectData?.employeeId?.map((id) => {
+          connect: payload?.employeeId?.map((id) => {
             return {
               id,
             };

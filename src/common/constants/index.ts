@@ -2,6 +2,7 @@ export const TABLE = {
   EMPLOYEE: 'Employee',
   PROJECT: 'Project',
   ADMIN: 'Admin',
+  CHAT: 'Chat',
 };
 
 export const RESPONSE_MESSAGE = {

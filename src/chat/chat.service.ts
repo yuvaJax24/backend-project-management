@@ -1,14 +1,37 @@
-import { Injectable } from '@nestjs/common';
+import {
+  HttpStatus,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { CreateChatDto } from './dto/create-chat.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { TABLE } from 'src/common/constants';
 
 @Injectable()
 export class ChatService {
+  constructor(private prisma: PrismaService) {}
   getAllChatData() {
     console.log('object-chat-saved');
   }
 
   saveChatData(chatData: CreateChatDto) {
-    console.log('object-chat-saved', chatData);
+    const payload = {
+      ...chatData,
+      sendDate: new Date().toISOString(),
+    };
+    try {
+      const chatData = this.prisma.create(TABLE.CHAT, payload);
+      return {
+        status: HttpStatus.OK,
+        message: 'chat Saved',
+      };
+    } catch (err) {
+      console.log('POST::Chat', err);
+      throw new InternalServerErrorException({
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: 'Failed to Save chat',
+      });
+    }
   }
 
   getChatDataByEmployeeId(id: number) {

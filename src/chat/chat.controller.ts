@@ -10,11 +10,6 @@ export class ChatController {
     return this.chatService.getAllChatData();
   }
 
-  @Post()
-  async saveChatData(@Body() chatData: CreateChatDto) {
-    return this.chatService.saveChatData(chatData);
-  }
-
   @Get('/:id')
   async getChatDataByEmployeeId(@Param() id: number) {
     return this.chatService.getChatDataByEmployeeId(id);
