@@ -14,13 +14,13 @@ export class ChatService {
     console.log('object-chat-saved');
   }
 
-  saveChatData(chatData: CreateChatDto) {
+  async saveChatData(chatData: CreateChatDto) {
     const payload = {
       ...chatData,
       sendDate: new Date().toISOString(),
     };
     try {
-      const chatData = this.prisma.create(TABLE.CHAT, payload);
+      await this.prisma.create(TABLE.CHAT, payload);
       return {
         status: HttpStatus.OK,
         message: 'chat Saved',

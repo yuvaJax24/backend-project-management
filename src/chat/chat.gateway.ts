@@ -1,12 +1,11 @@
 import { OnModuleInit } from '@nestjs/common';
 import {
-  ConnectedSocket,
   MessageBody,
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
-import { Server, Socket } from 'socket.io';
+import { Server } from 'socket.io';
 import { ChatService } from './chat.service';
 
 @WebSocketGateway({ cors: '*' })
@@ -22,8 +21,8 @@ export class ChatGateway implements OnModuleInit {
   }
 
   @SubscribeMessage('send-message')
-  sendMessage(@MessageBody() data: any) {
-    this.server.emit('send-message', data);
-    this.chatService.saveChatData(data);
+  async sendMessage(@MessageBody() data: any) {
+    await this.chatService.saveChatData(data);
+    await this.server.emit('send-message', data);
   }
 }
